@@ -263,7 +263,7 @@ with gr.Blocks(title="AeroSphere HUD") as demo:
     btn_b.click(fn=lambda h, b_lbl, cs: handle_interaction(f"Execute directive: {b_lbl}", h, cs), inputs=[history_state, btn_b, core_state], outputs=outputs_list, js="(h, b, cs) => { window.handleAction('extract'); return [h, b, cs]; }")    
     btn_genesis.click(fn=lambda h, cs: handle_interaction("Terraform into an Earth-like biological paradise. Set ice_coverage and lava_intensity to 0.0. Increase vegetation to 0.8, ocean_level to 0.6, and land_mass to 0.5, cloud_density to 0.7, storm_intensity to 0.5. Strictly set planet_color_hex to green (#1e7050) and atmosphere_color_hex to sky blue (#40d0a0).", h, cs), inputs=[history_state, core_state], outputs=outputs_list, js="(h, cs) => { window.handleAction('submit'); if (window.triggerShockwave) window.triggerShockwave(); return [h, cs]; }")
     btn_evolve.click(fn=handle_fast_forward, inputs=[history_state, core_state], outputs=[core_state, js_inject, habitability_badge, btn_evolve], js="(h, cs) => { window.handleAction('extract'); if (window.triggerShockwave) window.triggerShockwave(); return [h, cs]; }")
-    btn_reset.click(fn=reset_to_hadean, inputs=[], outputs=outputs_list, js="() => { window.handleAction('submit'); if (window.triggerShockwave) window.triggerShockwave(); return []; }")
+    btn_reset.click(fn=reset_sim, inputs=[], outputs=outputs_list, js="() => { window.handleAction('submit'); if (window.triggerShockwave) window.triggerShockwave(); return []; }")
     
     init_trigger = gr.Textbox(visible=False, elem_id="hidden_init_trigger")
     
