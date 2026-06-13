@@ -126,12 +126,12 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
     i_str = user_input.lower()
     fast_path_used = False
     
-    color_match = re.search(r"planet_color_hex to \w+ \((#[0-9a-fA-F]{6})\)", i_str)
+    color_match = re.search(r"planet_color_hex to .+?\((#[0-9a-fA-F]{6})\)", i_str)
     if color_match: 
         state["planet_color_hex"] = color_match.group(1)
         fast_path_used = True
         
-    atmos_match = re.search(r"atmosphere_color_hex to \w+ \((#[0-9a-fA-F]{6})\)", i_str)
+    atmos_match = re.search(r"atmosphere_color_hex to .+?\((#[0-9a-fA-F]{6})\)", i_str)
     if atmos_match: state["atmosphere_color_hex"] = atmos_match.group(1)
     
     veg_match = re.search(r"vegetation to ([0-9]+(?:\.[0-9]+)?)", i_str)
