@@ -55,7 +55,6 @@ class PlanetState(BaseModel):
     entities: list = Field(default_factory=list)
 
 class PlanetStateDelta(BaseModel):
-    narrative: str = Field(description="Explain what happened.")
     lava_intensity: float = Field(default=None)
     ice_coverage: float = Field(default=None)
     planet_color_hex: str = Field(default=None)
@@ -63,6 +62,7 @@ class PlanetStateDelta(BaseModel):
     vegetation: float = Field(default=None)
     ocean_level: float = Field(default=None)
     land_mass: float = Field(default=None)
+    narrative: str = Field(description="Explain what happened. Put this string LAST.")
 
 def compute_era(age: int) -> tuple[str, float]:
     if age < 0: return ("PRE_FORMATION", 0.0)
@@ -134,16 +134,16 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
     atmos_match = re.search(r"atmosphere_color_hex to \w+ \((#[0-9a-fA-F]{6})\)", i_str)
     if atmos_match: state["atmosphere_color_hex"] = atmos_match.group(1)
     
-    veg_match = re.search(r"vegetation to ([0-9.]+)", i_str)
+    veg_match = re.search(r"vegetation to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if veg_match: state["vegetation"] = float(veg_match.group(1))
 
-    ocean_match = re.search(r"ocean_level to ([0-9.]+)", i_str)
+    ocean_match = re.search(r"ocean_level to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if ocean_match: state["ocean_level"] = float(ocean_match.group(1))
 
-    land_match = re.search(r"land_mass to ([0-9.]+)", i_str)
+    land_match = re.search(r"land_mass to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if land_match: state["land_mass"] = float(land_match.group(1))
     
-    ice_match = re.search(r"ice_coverage and lava_intensity to ([0-9.]+)", i_str)
+    ice_match = re.search(r"ice_coverage and lava_intensity to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if ice_match: 
         state["ice_coverage"] = float(ice_match.group(1))
         state["lava_intensity"] = float(ice_match.group(1))
@@ -179,15 +179,27 @@ Output MUST be strict JSON matching this Delta schema (do NOT include unchanged 
     start_idx = raw_output.find('{')
     if start_idx != -1:
         raw_output = raw_output[start_idx:]
+        delta = {}
         try:
             delta, _ = json.JSONDecoder().raw_decode(raw_output)
+        except Exception as e:
+            fast_path_used = False # trigger absolute heuristics
+            # Fallback robust regex extraction from raw unescaped strings!
+            nar_match = re.search(r'"narrative"\s*:\s*"([^"]*)', raw_output)
+            if nar_match: delta["narrative"] = nar_match.group(1).rstrip(", \n}")
+            for k in ["planet_color_hex", "atmosphere_color_hex"]:
+                m = re.search(fr'"{k}"\s*:\s*"(#[0-9a-fA-F]{{6}})', raw_output)
+                if m: delta[k] = m.group(1)
+            for k in ["lava_intensity", "ice_coverage", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity"]:
+                m = re.search(fr'"{k}"\s*:\s*([0-9.]+)', raw_output)
+                if m: delta[k] = float(m.group(1))
+
+        if delta:
             valid_keys = PlanetStateDelta.model_fields.keys()
             for k, v in delta.items():
                 if k in valid_keys and v is not None:
                     state[k] = v
-        except Exception as e:
-            fast_path_used = False # trigger absolute heuristics
-            pass
+                    fast_path_used = True # Valid extraction means we succeeded!
             
     # Absolute Fallback if LLM generated an empty dict or crashed
     if not fast_path_used and state.get("narrative", "") == core_state_dict.get("narrative", ""):
