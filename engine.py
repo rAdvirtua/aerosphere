@@ -121,6 +121,40 @@ def infer_llm(messages: list) -> str:
 
 def get_next_planet_state(user_input: str, history: list, core_state_dict: dict = None) -> PlanetState:
     state = core_state_dict or {}
+    
+    # 0 ms Regex Matching for absolute parametric overrides (Genesis Spark and Buttons)
+    i_str = user_input.lower()
+    fast_path_used = False
+    
+    color_match = re.search(r"planet_color_hex to \w+ \((#[0-9a-fA-F]{6})\)", i_str)
+    if color_match: 
+        state["planet_color_hex"] = color_match.group(1)
+        fast_path_used = True
+        
+    atmos_match = re.search(r"atmosphere_color_hex to \w+ \((#[0-9a-fA-F]{6})\)", i_str)
+    if atmos_match: state["atmosphere_color_hex"] = atmos_match.group(1)
+    
+    veg_match = re.search(r"vegetation to ([0-9.]+)", i_str)
+    if veg_match: state["vegetation"] = float(veg_match.group(1))
+
+    ocean_match = re.search(r"ocean_level to ([0-9.]+)", i_str)
+    if ocean_match: state["ocean_level"] = float(ocean_match.group(1))
+
+    land_match = re.search(r"land_mass to ([0-9.]+)", i_str)
+    if land_match: state["land_mass"] = float(land_match.group(1))
+    
+    ice_match = re.search(r"ice_coverage and lava_intensity to ([0-9.]+)", i_str)
+    if ice_match: 
+        state["ice_coverage"] = float(ice_match.group(1))
+        state["lava_intensity"] = float(ice_match.group(1))
+        
+    if fast_path_used:
+        state["narrative"] = f"COMMAND EXECUTED: GENESIS SPARK. Optimal planetary conditions reached. Biological boom imminent."
+        final_state = PlanetState.model_validate(state)
+        final_state.habitability = check_habitability(final_state)
+        return final_state
+
+    # LLM Fallback for Natural Generation
     schema = PlanetStateDelta.model_json_schema()
     SYSTEM = f"""You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
 Output MUST be strict JSON matching this Delta schema (do NOT include unchanged variables!):
@@ -136,10 +170,11 @@ Output MUST be strict JSON matching this Delta schema (do NOT include unchanged 
     try:
         raw_output = infer_llm(messages)
     except Exception as e:
-        state["narrative"] = f"ZeroGPU Inference Failure: {e}"
-        state_obj = PlanetState.model_validate(state)
-        state_obj.habitability = check_habitability(state_obj)
-        return state_obj
+        import traceback
+        state["narrative"] = f"> CRITICAL ZEROGPU FAILURE: {str(e)} | TRACE: {traceback.format_exc()[-200:]}"
+        final_state = PlanetState.model_validate(state)
+        final_state.habitability = check_habitability(final_state)
+        return final_state
         
     start_idx = raw_output.find('{')
     if start_idx != -1:
@@ -151,10 +186,28 @@ Output MUST be strict JSON matching this Delta schema (do NOT include unchanged 
                 if k in valid_keys and v is not None:
                     state[k] = v
         except Exception as e:
-            state["narrative"] = f"LLM parsing error: {e}"
-    else:
-        state["narrative"] = "LLM parsing error: No JSON block found in output."
-        
+            fast_path_used = False # trigger absolute heuristics
+            pass
+            
+    # Absolute Fallback if LLM generated an empty dict or crashed
+    if not fast_path_used and state.get("narrative", "") == core_state_dict.get("narrative", ""):
+        if 'flood' in i_str or 'water' in i_str or 'ocean' in i_str:
+            state["lava_intensity"] = 0.0
+            state["ocean_level"] = min(1.0, state.get("ocean_level", 0.0) + 0.6)
+            state["planet_color_hex"] = "#113355"
+            state["narrative"] = "> Tectonic flooding initiated. Oceanic levels critical."
+        elif 'nuke' in i_str or 'fire' in i_str or 'destroy' in i_str or 'core' in i_str:
+            state["vegetation"] = 0.0
+            state["lava_intensity"] = min(1.0, state.get("lava_intensity", 0.0) + 0.8)
+            state["planet_color_hex"] = "#ff3300"
+            state["narrative"] = "> Core temperatures rising. Exterminatus cascade triggered."
+        elif 'seed' in i_str or 'life' in i_str or 'plant' in i_str or 'extract' in i_str:
+            state["vegetation"] = min(1.0, state.get("vegetation", 0.0) + 0.5)
+            state["planet_color_hex"] = "#1e7050"
+            state["narrative"] = "> Biosphere seeded. Vegetation rapidly spreading."
+        else:
+            state["narrative"] = f"> ZERO-SHOT ABORT: Model output unparseable text instead of JSON: {raw_output[:100]}"
+            
     final_state = PlanetState.model_validate(state)
     final_state.habitability = check_habitability(final_state)
     return final_state
