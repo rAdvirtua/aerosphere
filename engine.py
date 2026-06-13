@@ -143,6 +143,12 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
     land_match = re.search(r"land_mass to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if land_match: state["land_mass"] = float(land_match.group(1))
     
+    cloud_match = re.search(r"cloud_density to ([0-9]+(?:\.[0-9]+)?)", i_str)
+    if cloud_match: state["cloud_density"] = float(cloud_match.group(1))
+
+    storm_match = re.search(r"storm_intensity to ([0-9]+(?:\.[0-9]+)?)", i_str)
+    if storm_match: state["storm_intensity"] = float(storm_match.group(1))
+    
     ice_match = re.search(r"ice_coverage and lava_intensity to ([0-9]+(?:\.[0-9]+)?)", i_str)
     if ice_match: 
         state["ice_coverage"] = float(ice_match.group(1))
@@ -156,9 +162,8 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
 
     # LLM Fallback for Natural Generation
     SYSTEM = """You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
-Output MUST be a single JSON block containing EVERY SINGLE parameter listed in the valid keys, plus a final narrative. Do not emit partial updates. You MUST provide values for all keys.
-CRITICAL: When cooling or heating the planet, you MUST update 'lava_intensity' and 'ice_coverage' accordingly. ALWAYS select realistic geological rock colors (e.g. basalts, grey/brown rock, obsidian, dull ochre) for 'planet_color_hex'. DO NOT make the rock white for snow or green for life (the physical shader masks like 'ice_coverage' and 'vegetation' will automatically cover the planet realistically!). For 'atmosphere_color_hex', select realistic astronomical atmospheric gases (sky blue, dusty orange, alien violet, etc).
-
+Output MUST be a single JSON block containing ONLY the parameters that changed, plus a final narrative.
+CRITICAL: When cooling or freezing the planet, you MUST ALWAYS output 'lava_intensity': 0.0 in addition to 'ice_coverage'. When generating 'planet_color_hex', ALWAYS select realistic geological rock colors (e.g. basalts, grey rock). Do NOT make the rock white or green.
 Valid keys: "lava_intensity", "ice_coverage", "planet_color_hex", "atmosphere_color_hex", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity", "narrative".
 
 Example Format:
