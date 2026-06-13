@@ -156,8 +156,8 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
 
     # LLM Fallback for Natural Generation
     SYSTEM = """You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
-Output MUST be a single JSON block containing the parameters that changed, plus a final narrative.
-CRITICAL: When changing 'planet_color_hex', ALWAYS select realistic geological rock colors (e.g. basalts, grey/brown rock, obsidian, dull ochre). DO NOT make the rock white for snow or green for life (the physical shader masks like 'ice_coverage' and 'vegetation' will automatically cover the planet realistically!). For 'atmosphere_color_hex', select realistic astronomical atmospheric gases (sky blue, dusty orange, alien violet, etc).
+Output MUST be a single JSON block containing EVERY SINGLE parameter listed in the valid keys, plus a final narrative. Do not emit partial updates. You MUST provide values for all keys.
+CRITICAL: When cooling or heating the planet, you MUST update 'lava_intensity' and 'ice_coverage' accordingly. ALWAYS select realistic geological rock colors (e.g. basalts, grey/brown rock, obsidian, dull ochre) for 'planet_color_hex'. DO NOT make the rock white for snow or green for life (the physical shader masks like 'ice_coverage' and 'vegetation' will automatically cover the planet realistically!). For 'atmosphere_color_hex', select realistic astronomical atmospheric gases (sky blue, dusty orange, alien violet, etc).
 
 Valid keys: "lava_intensity", "ice_coverage", "planet_color_hex", "atmosphere_color_hex", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity", "narrative".
 
