@@ -557,9 +557,19 @@ window.initAeroSpherePlanet = function () {
 window.updatePlanet = function (stateJSON) {
   if (typeof THREE === "undefined" || !window.THREE) return;
   if (!stateJSON) return;
+
+  if (typeof stateJSON === 'string') {
+    try {
+      stateJSON = JSON.parse(stateJSON);
+    } catch (e) {
+      console.warn("Invalid payload received from Python bridge:", e);
+      return;
+    }
+  }
+
   window.__aero_lastStateJSON = stateJSON; // store for bootstrap persistence
 
-  console.log("[AeroSphere] Updating planet with state:", stateJSON);
+  console.log("[AeroSphere] Updating planet with parsed state:", stateJSON);
 
   if (stateJSON.planet_color_hex && window.__aero_uniformTargets) {
     window.__aero_uniformTargets.colorCenter.set(stateJSON.planet_color_hex);
