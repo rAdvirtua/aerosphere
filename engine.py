@@ -155,12 +155,20 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
         return final_state
 
     # LLM Fallback for Natural Generation
-    schema = PlanetStateDelta.model_json_schema()
-    SYSTEM = f"""You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
-Output MUST be strict JSON matching this Delta schema (do NOT include unchanged variables!):
-{json.dumps(schema)}"""
+    SYSTEM = """You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
+Output MUST be a single JSON block containing ONLY the numerical parameters that changed, plus a final narrative.
 
-    user_msg = f"Current State:\n{json.dumps(state)}\n\nUser Intervention: {user_input}\n\nEvolve logically! Do NOT add unrequested JSON fields."
+Valid keys: "lava_intensity", "ice_coverage", "planet_color_hex", "atmosphere_color_hex", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity", "narrative".
+
+Example Format:
+{
+  "lava_intensity": 0.0,
+  "ocean_level": 0.8,
+  "planet_color_hex": "#113355",
+  "narrative": "A massive flood covers the continent."
+}"""
+
+    user_msg = f"Current State:\n{json.dumps(state)}\n\nUser Intervention: {user_input}\n\nEvolve logically! Do NOT add unrequested JSON fields. Output ONLY JSON."
     
     messages = [
         {"role": "system", "content": SYSTEM},
