@@ -1,8 +1,3 @@
-// =========================================================
-// AEROSPHERE — Three.js Planet Renderer
-// Called by Gradio's demo.load() hook
-// =========================================================
-
 window.initAeroSpherePlanet = function () {
   console.log("[AeroSphere] Initializing Three.js planet...");
 
@@ -108,8 +103,8 @@ window.initAeroSpherePlanet = function () {
         float terrain = clamp(fbm3(pNormal * 5.0 + r) + (landMass * 0.35), 0.0, 1.0);
         
         vec3 landColor = mix(colorCenter, colorEdge, clamp(terrain * 1.5, 0.0, 1.0));
-        vec3 brownColor = vec3(0.55, 0.4, 0.25);
-        landColor = mix(landColor, brownColor, clamp(landMass, 0.0, 1.0));
+        
+        
         
         float oceanMask = 0.0;
         if (oceanLevel > 0.001) {
