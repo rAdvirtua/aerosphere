@@ -200,7 +200,7 @@ Example Format:
                 if m: delta[k] = m.group(1)
             for k in ["lava_intensity", "ice_coverage", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity"]:
                 m = re.search(fr'"{k}"\s*:\s*([0-9.]+)', raw_output)
-                if m: delta[k] = float(m.group(1))
+                if m: delta[k] = max(0.0, min(1.0, float(m.group(1))))
 
         if delta:
             valid_keys = PlanetStateDelta.model_fields.keys()
