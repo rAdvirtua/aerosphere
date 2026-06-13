@@ -104,7 +104,7 @@ def infer_llm(messages: list) -> str:
     import torch
     global llm_pipeline
     if llm_pipeline is None:
-        llm_pipeline = pipeline("text-generation", model="mistralai/Mistral-Nemo-Minitron-8B-Instruct-2409", device_map="auto", torch_dtype=torch.bfloat16)
+        llm_pipeline = pipeline("text-generation", model="nvidia/Mistral-NeMo-Minitron-8B-Instruct", device_map="auto", torch_dtype=torch.bfloat16)
     resp = llm_pipeline(messages, max_new_tokens=400, return_full_text=False, temperature=0.7)
     return resp[0]["generated_text"].strip()
 
