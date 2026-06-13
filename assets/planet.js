@@ -52,6 +52,8 @@ window.initAeroSpherePlanet = function () {
     uniform float landMass;
     uniform float techLevel;
     uniform vec3 sunDirection;
+    uniform float shockwave;
+
     
     varying vec2 vUv;
     varying vec3 vPosition;
@@ -203,6 +205,13 @@ window.initAeroSpherePlanet = function () {
         rim = smoothstep(0.4, 1.0, rim);
         
         finalColor += colorEdge * rim * (1.0 + lavaIntensity);
+        
+        if (shockwave > 0.001) {
+            float ring = sin(pNormal.y * 20.0 - (1.0 - shockwave) * 10.0);
+            float ringMask = smoothstep(0.9, 1.0, ring) * shockwave;
+            finalColor += vec3(0.5, 0.9, 0.7) * ringMask * 2.0;
+            finalColor += vec3(0.5, 0.9, 0.7) * shockwave * 0.5; // Global flash
+        }
 
         gl_FragColor = vec4(finalColor, 1.0);
     }
@@ -222,7 +231,8 @@ window.initAeroSpherePlanet = function () {
       oceanLevel: { value: 0.0 },
       landMass: { value: 0.0 },
       techLevel: { value: 0.0 },
-      sunDirection: { value: new THREE.Vector3(1, 0, 0) }
+      sunDirection: { value: new THREE.Vector3(1, 0, 0) },
+      shockwave: { value: 0.0 }
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
@@ -252,6 +262,12 @@ window.initAeroSpherePlanet = function () {
   if (window.__aero_lastStateJSON) {
     window.updatePlanet(window.__aero_lastStateJSON);
   }
+
+  window.triggerShockwave = function () {
+    if (planetMat && planetMat.uniforms) {
+      planetMat.uniforms.shockwave.value = 1.0;
+    }
+  };
 
   // --- Thin inner atmosphere shell (Fresnel-like edge glow) ---
   const innerAtmoGeo = new THREE.SphereGeometry(1.63, 64, 64);
@@ -414,6 +430,11 @@ window.initAeroSpherePlanet = function () {
 
     if (planetMat.uniforms) {
       planetMat.uniforms.time.value += delta;
+
+      if (planetMat.uniforms.shockwave.value > 0.0) {
+        planetMat.uniforms.shockwave.value -= delta * 0.8;
+        if (planetMat.uniforms.shockwave.value < 0.0) planetMat.uniforms.shockwave.value = 0.0;
+      }
 
       if (window.__aero_uniformTargets) {
         const lerpSpeed = delta * 1.5;
