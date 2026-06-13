@@ -211,7 +211,22 @@ Example Format:
             for k, v in delta.items():
                 if k in valid_keys and v is not None:
                     state[k] = v
-                    fast_path_used = True # Valid extraction means we succeeded!
+                    fast_path_used = True
+
+            # --- Python Physical Integrity Safeguards for 8B LLM Limitations ---
+            if "ice_coverage" in delta and delta["ice_coverage"] > 0.1:
+                state["lava_intensity"] = 0.0
+                if "planet_color_hex" not in delta: state["planet_color_hex"] = "#5a6b7c"
+                if "atmosphere_color_hex" not in delta: state["atmosphere_color_hex"] = "#80b0c0"
+                    
+            elif "lava_intensity" in delta and delta["lava_intensity"] > 0.5:
+                state["ice_coverage"] = 0.0
+                state["vegetation"] = 0.0
+                if "planet_color_hex" not in delta: state["planet_color_hex"] = "#151010"
+                    
+            elif "vegetation" in delta and delta["vegetation"] > 0.1:
+                state["lava_intensity"] = 0.0
+                if "planet_color_hex" not in delta: state["planet_color_hex"] = "#1e7050"
             
     # Absolute Fallback if LLM generated an empty dict or crashed
     if not fast_path_used and state.get("narrative", "") == core_state_dict.get("narrative", ""):
