@@ -75,8 +75,6 @@ def compute_era(age: int) -> tuple[str, float]:
     else: return ("ANTHROPOCENE", 1.0)
 
 def tick_planet(state: PlanetState, delta_t: float) -> PlanetState:
-    state.lava_intensity = max(0.0, state.lava_intensity - (0.05 * delta_t))
-    state.storm_intensity = max(0.0, state.storm_intensity - (0.02 * delta_t))
     return state
 
 def check_habitability(state: PlanetState) -> HabitabilityStatus:
