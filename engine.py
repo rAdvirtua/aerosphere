@@ -96,6 +96,17 @@ except ImportError:
             if len(args) == 1 and callable(args[0]): return args[0]
             return lambda fn: fn
 
+from huggingface_hub import snapshot_download
+
+def init_llm():
+    """ 
+    Pre-downloads the model weights onto the CPU host's cache to completely 
+    avoid eating into the strict 60s ZeroGPU quota!
+    """
+    print("[AeroSphere] Pre-flight CPU model download initiating...")
+    snapshot_download("nvidia/Mistral-NeMo-Minitron-8B-Instruct", ignore_patterns=["*.msgpack", "*.h5", "*.ot", "*.safetensors.index.json"])
+    print("[AeroSphere] Pre-flight CPU model downloaded successfully!")
+
 llm_pipeline = None
 
 @spaces.GPU(duration=60)
@@ -147,6 +158,3 @@ Output MUST be strict JSON matching this Delta schema (do NOT include unchanged 
     final_state = PlanetState.model_validate(state)
     final_state.habitability = check_habitability(final_state)
     return final_state
-
-def init_llm():
-    pass
