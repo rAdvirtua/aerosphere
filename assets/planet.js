@@ -103,6 +103,10 @@ window.initAeroSpherePlanet = function () {
         float terrain = clamp(fbm3(pNormal * 5.0 + r) + (landMass * 0.35), 0.0, 1.0);
         
         vec3 landColor = mix(colorCenter, colorEdge, clamp(terrain * 1.5, 0.0, 1.0));
+        vec3 dirtColor = vec3(0.45, 0.35, 0.2); 
+        float dirtNoise = fbm3(pNormal * 20.0);
+        float dirtMask = smoothstep(0.3, 0.7, dirtNoise) * clamp(landMass * 1.2, 0.0, 1.0);
+        landColor = mix(landColor, dirtColor, dirtMask);
         
         
         
