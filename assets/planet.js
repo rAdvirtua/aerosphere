@@ -120,16 +120,6 @@ window.initAeroSpherePlanet = function () {
         vec3 oceanCol = vec3(0.05, 0.15, 0.25);
         vec3 finalColor = mix(landColor, oceanCol, oceanMask);
         
-        // Fractured Patchy Vegetation
-        float vegNoise = fbm3(pNormal * 25.0);
-        float vegMask = 0.0;
-        if (vegetation > 0.001) {
-            vegMask = smoothstep(max(0.0, oceanLevel - 0.01), oceanLevel + 0.3, terrain) * (1.0 - smoothstep(0.6, 1.0, terrain));
-            vegMask *= smoothstep(0.4, 0.6, vegNoise); // Scatters the jungle into organic patches
-        }
-        vec3 vegCol = vec3(0.1, 0.4, 0.15);
-        finalColor = mix(finalColor, vegCol, vegMask * vegetation);
-        
         // Fractured Patchy Ice
         float iceNoise = fbm3(pNormal * 18.0 + vec3(1.0, 1.0, time * 0.005));
         float iceMask = 0.0;
@@ -140,6 +130,16 @@ window.initAeroSpherePlanet = function () {
         vec3 iceCol = vec3(0.85, 0.95, 1.0);
         // Slightly boost ice opacity so it doesn't look fully transparent
         finalColor = mix(finalColor, iceCol, clamp(iceMask, 0.0, 1.0) * min(iceCoverage * 2.0, 1.0));
+        
+        // Fractured Patchy Vegetation
+        float vegNoise = fbm3(pNormal * 25.0);
+        float vegMask = 0.0;
+        if (vegetation > 0.001) {
+            vegMask = smoothstep(max(0.0, oceanLevel - 0.01), oceanLevel + 0.3, terrain) * (1.0 - smoothstep(0.6, 1.0, terrain));
+            vegMask *= smoothstep(0.4, 0.6, vegNoise); // Scatters the jungle into organic patches
+        }
+        vec3 vegCol = vec3(0.1, 0.4, 0.15);
+        finalColor = mix(finalColor, vegCol, vegMask * vegetation);
         
         // Lava: sharp glowing ridges instead of blobs
         // Glow from lava should ignore day/night so we compute it early, but apply it later
