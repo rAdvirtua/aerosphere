@@ -51,6 +51,7 @@ def handle_interaction(user_input, history, core_state):
         state = get_next_planet_state(user_input, history, core_state)
         new_core_state = state.model_dump(mode='json')
         new_core_state["entities"] = []
+        new_core_state_str = __import__('json').dumps(new_core_state)
             
         # Failsafe overlay hide if eager load lagged
         hide_overlay_str = "<script>let o=document.getElementById('aerosphere-loading-overlay');if(o){o.style.opacity='0';setTimeout(()=>o.style.display='none',1000);}</script>"
@@ -75,7 +76,7 @@ def handle_interaction(user_input, history, core_state):
             gr.update(value=state.button_b_label),
             "", 
             history_html,
-            new_core_state,
+            new_core_state_str,
             new_core_state,
             badge_html,
             gr.update(value=f"🧬 EVOLVE CIVILIZATION" if getattr(state, "evolution_age", 0) >= 20_000_000 else ("🧬 SEED LIFE" if badge_val != "STERILE" else "🧬 SEED LIFE (LOCKED)"), interactive=(badge_val != "STERILE"))
@@ -92,7 +93,7 @@ def handle_interaction(user_input, history, core_state):
             gr.update(value="Crash"),
             user_input,
             "<code>Crash State Isolated.</code>",
-            {},
+            "{}",
             core_state,
             '<div class="aerosphere-status-value warning">ERROR</div>',
             gr.update(interactive=False)
@@ -108,6 +109,7 @@ def reset_sim():
         planet_color_hex="#ff1e00", atmosphere_color_hex="#ff4400"
     )
     hadean_dump = hadean.model_dump()
+    hadean_dump_str = hadean.model_dump_json()
     return (
         [], # history
         hadean.narrative + "<span class='aerosphere-cursor-blink'></span>",
@@ -116,7 +118,7 @@ def reset_sim():
         gr.update(value=hadean.button_b_label),
         "", # console input
         '<div class="aerosphere-console-history" id="console-history"><div><span style="color:rgba(100,200,180,0.5)">›</span> SYSTEM FORMAT COMPLETE</div></div>',
-        hadean_dump, # js mapping
+        hadean_dump_str, # js mapping
         hadean_dump, # core state
         '<div class="aerosphere-status-badge warning">STERILE</div><div class="aerosphere-tech-badge">TECH: 0.00</div>',
         gr.update(value="🧬 SEED LIFE (LOCKED)", interactive=False)
@@ -155,7 +157,8 @@ with gr.Blocks(title="AeroSphere HUD") as demo:
         "planet_color_hex": "#ff1e00", "atmosphere_color_hex": "#ff4400"
     }
     
-    js_inject = gr.JSON(value=hadean_default, visible=False)
+    import json
+    js_inject = gr.Textbox(value=json.dumps(hadean_default), visible=False, elem_id="js_inject")
     
     with gr.Row(elem_classes=["aerosphere-habitability-panel"]):
         gr.HTML('<div class="aerosphere-panel-label" style="display:inline-block; margin-right: 15px;">Planetary Status</div>')
@@ -216,13 +219,14 @@ with gr.Blocks(title="AeroSphere HUD") as demo:
         state = PlanetState.model_validate(cs)
         state = tick_planet(state, delta_t=1.0) # approx 1 second of real world time
         new_cs = state.model_dump(mode='json')
+        new_cs_str = state.model_dump_json()
         badge_val = state.habitability.value if hasattr(state.habitability, "value") else state.habitability
         badge_color = "warning" if badge_val == "STERILE" else "nominal"
         
-        lbl = "🧬 EVOLVE CIVILIZATION" if state.evolution_age >= 20_000_000 else ("🧬 SEED LIFE" if badge_val != "STERILE" else "🧬 SEED LIFE (LOCKED)")
+        lbl = "🧬 EVOLVE CIVILIZATION" if getattr(state, "evolution_age", 0) >= 20_000_000 else ("🧬 SEED LIFE" if badge_val != "STERILE" else "🧬 SEED LIFE (LOCKED)")
         btn_update = gr.update(value=lbl, interactive=(badge_val != "STERILE"))
         
-        return new_cs, new_cs, f'<div class="aerosphere-status-badge {badge_color}">{badge_val}</div><div class="aerosphere-tech-badge">TECH: {state.tech_level:.2f}</div>', btn_update
+        return new_cs, new_cs_str, f'<div class="aerosphere-status-badge {badge_color}">{badge_val}</div><div class="aerosphere-tech-badge">TECH: {state.tech_level:.2f}</div>', btn_update
 
     tick_timer = gr.Timer(value=1)
     tick_timer.tick(fn=handle_tick, inputs=[history_state, core_state], outputs=[core_state, js_inject, habitability_badge, btn_evolve])
@@ -244,13 +248,14 @@ with gr.Blocks(title="AeroSphere HUD") as demo:
         
         new_cs = state.model_dump(mode='json')
         new_cs["entities"] = []
+        new_cs_str = __import__('json').dumps(new_cs)
             
         badge_val = state.habitability.value if hasattr(state.habitability, "value") else state.habitability
         badge_color = "warning" if badge_val == "STERILE" else "nominal"
         bdg = f'<div class="aerosphere-status-badge {badge_color}">{badge_val}</div><div class="aerosphere-tech-badge">TECH: {state.tech_level:.2f}</div>'
         
-        lbl = "🧬 EVOLVE CIVILIZATION" if state.evolution_age >= 20_000_000 else "🧬 SEED LIFE"
-        return new_cs, new_cs, bdg, gr.update(value=lbl, interactive=True)
+        lbl = "🧬 EVOLVE CIVILIZATION" if getattr(state, "evolution_age", 0) >= 20_000_000 else "🧬 SEED LIFE"
+        return new_cs, new_cs_str, bdg, gr.update(value=lbl, interactive=True)
 
 
     console_input.submit(fn=handle_interaction, inputs=inputs_list, outputs=outputs_list, js="(user_input, h, cs) => { window.handleAction('submit'); return [user_input, h, cs]; }")
