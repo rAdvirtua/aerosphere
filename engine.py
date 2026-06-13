@@ -156,7 +156,8 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
 
     # LLM Fallback for Natural Generation
     SYSTEM = """You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
-Output MUST be a single JSON block containing ONLY the numerical parameters that changed, plus a final narrative.
+Output MUST be a single JSON block containing the parameters that changed, plus a final narrative.
+CRITICAL: If the user changes the temperature, climate, or biome, you MUST also output 'planet_color_hex' and 'atmosphere_color_hex' to deeply match the new visual aesthetic (e.g., icy blue/white rocks for cold, dark brown/grey for barren, lush green for life).
 
 Valid keys: "lava_intensity", "ice_coverage", "planet_color_hex", "atmosphere_color_hex", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity", "narrative".
 
