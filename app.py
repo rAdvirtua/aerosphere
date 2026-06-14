@@ -24,14 +24,54 @@ script1.onload = () => {{
 document.head.appendChild(script1);
 </script>
 <script>
-""" + RAW_JS + """
+""" + RAW_JS + f"""
 </script>
 <audio id="ambient-track" loop src="https://cdn.pixabay.com/download/audio/2021/11/24/audio_3a6a9bebbd.mp3" preload="auto"></audio>
 <script>
-  document.addEventListener('click', () => { 
-    let aud = document.getElementById('ambient-track'); 
-    if(aud.paused) { aud.volume = 0.3; aud.play(); } 
-  }, {once: true});
+  document.addEventListener('click', () => {{
+    let aud = document.getElementById('ambient-track');
+    if(aud.paused) {{ aud.volume = 0.3; aud.play(); }}
+  }}, {{once: true}});
+
+  (function () {{
+    function initToggle() {{
+      if (window.innerWidth > 768) return;
+      const btn = document.createElement('button');
+      btn.className = 'aerosphere-hud-toggle';
+      btn.setAttribute('aria-label', 'Toggle HUD');
+      btn.innerHTML = `
+        <span class="icon-open" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="rgba(160,220,240,0.9)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+            <circle cx="12" cy="12" r="7" stroke-dasharray="3 2" opacity="0.4"/>
+          </svg>
+        </span>
+        <span class="icon-close" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="rgba(160,220,240,0.9)" stroke-width="2"
+               stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </span>
+      `;
+      document.body.appendChild(btn);
+      btn.addEventListener('click', () => {{
+        document.body.classList.toggle('hud-visible');
+      }});
+      document.addEventListener('keydown', e => {{
+        if (e.key === 'Escape') document.body.classList.remove('hud-visible');
+      }});
+    }}
+    if (document.body) {{
+      initToggle();
+    }} else {{
+      document.addEventListener('DOMContentLoaded', initToggle);
+    }}
+  }})();
 </script>
 """
 
