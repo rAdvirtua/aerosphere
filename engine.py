@@ -62,6 +62,8 @@ class PlanetStateDelta(BaseModel):
     vegetation: float = Field(default=None)
     ocean_level: float = Field(default=None)
     land_mass: float = Field(default=None)
+    cloud_density: float = Field(default=None)
+    storm_intensity: float = Field(default=None)
     narrative: str = Field(description="Explain what happened. Put this string LAST.")
 
 def compute_era(age: int) -> tuple[str, float]:
@@ -161,7 +163,7 @@ def get_next_planet_state(user_input: str, history: list, core_state_dict: dict 
     # LLM Fallback for Natural Generation
     SYSTEM = """You are the AeroSphere Tectonic Evolution Engine. Control physical state based on user interventions.
 Output MUST be a single JSON block containing EVERY SINGLE parameter listed in the valid keys, plus a final narrative. Do not emit partial updates. You MUST provide values for all keys.
-CRITICAL: When changing the planet's climate or biome, you MUST update 'lava_intensity', 'ice_coverage', 'planet_color_hex', and 'atmosphere_color_hex' to deeply match the new visual aesthetic. ALWAYS select realistic geological rock colors (e.g. basalts, grey/brown rock, obsidian, dull ochre) for 'planet_color_hex', never white or green.
+CRITICAL: When changing the planet's climate or biome, you MUST update 'lava_intensity', 'ice_coverage', 'planet_color_hex', and 'atmosphere_color_hex' to deeply match the new visual aesthetic. Select realistic geological rock or biome colors. Use blue/green for earth-like biomes or oceans, white for ice, etc.
 Valid keys: "lava_intensity", "ice_coverage", "planet_color_hex", "atmosphere_color_hex", "vegetation", "ocean_level", "land_mass", "cloud_density", "storm_intensity", "narrative".
 
 Example Format:
@@ -172,7 +174,8 @@ Example Format:
   "narrative": "A massive flood covers the continent."
 }"""
 
-    user_msg = f"Current State:\n{json.dumps(state)}\n\nUser Intervention: {user_input}\n\nEvolve logically! Do NOT add unrequested JSON fields. Output ONLY JSON."
+    history_text = "\n".join([f"User: {t['content']}" if t['role']=='user' else f"Narrative: {t['content']}" for t in history[-6:]]) if history else "No previous interventions."
+    user_msg = f"Recent History:\n{history_text}\n\nCurrent State:\n{json.dumps(state)}\n\nUser Intervention: {user_input}\n\nEvolve logically! Do NOT add unrequested JSON fields. Output ONLY JSON."
     
     messages = [
         {"role": "system", "content": SYSTEM},
