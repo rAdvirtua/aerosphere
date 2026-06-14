@@ -33,45 +33,7 @@ document.head.appendChild(script1);
     if(aud.paused) {{ aud.volume = 0.3; aud.play(); }}
   }}, {{once: true}});
 
-  (function () {{
-    function initToggle() {{
-      if (window.innerWidth > 768) return;
-      const btn = document.createElement('button');
-      btn.className = 'aerosphere-hud-toggle';
-      btn.setAttribute('aria-label', 'Toggle HUD');
-      btn.innerHTML = `
-        <span class="icon-open" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-               stroke="rgba(160,220,240,0.9)" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
-            <circle cx="12" cy="12" r="7" stroke-dasharray="3 2" opacity="0.4"/>
-          </svg>
-        </span>
-        <span class="icon-close" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-               stroke="rgba(160,220,240,0.9)" stroke-width="2"
-               stroke-linecap="round">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </span>
-      `;
-      document.body.appendChild(btn);
-      btn.addEventListener('click', () => {{
-        document.body.classList.toggle('hud-visible');
-      }});
-      document.addEventListener('keydown', e => {{
-        if (e.key === 'Escape') document.body.classList.remove('hud-visible');
-      }});
-    }}
-    if (document.body) {{
-      initToggle();
-    }} else {{
-      document.addEventListener('DOMContentLoaded', initToggle);
-    }}
-  }})();
+
 </script>
 """
 
@@ -184,6 +146,25 @@ bg_html = f"""
 <div class="aerosphere-corner-br"></div>
 <div id="svg-lifeform-layer" class="aerosphere-svg-layer" style="display:none; pointer-events: none; position: absolute; inset:0; z-index: 50;"></div>
 <button id="aerosphere-ascend-btn" class="aerosphere-ascend-btn" onclick="window.setCameraMode('ASCENDING')" style="display:none; position:absolute; top:80px; left:50%; transform:translateX(-50%); z-index:100; font-family:'Orbitron', sans-serif; background:rgba(0,0,0,0.8); color:#50e0c0; border:1px solid #50e0c0; padding:10px 20px; font-weight:700; cursor:pointer;">🚀 ASCEND TO ORBIT</button>
+<button id="aerosphere-hud-toggle" class="aerosphere-hud-toggle" aria-label="Toggle HUD" onclick="document.body.classList.toggle('hud-visible')">
+  <span class="icon-open" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         stroke="rgba(160,220,240,0.9)" stroke-width="1.5"
+         stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+      <circle cx="12" cy="12" r="7" stroke-dasharray="3 2" opacity="0.4"/>
+    </svg>
+  </span>
+  <span class="icon-close" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+         stroke="rgba(160,220,240,0.9)" stroke-width="2"
+         stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </span>
+</button>
 """
 
 with gr.Blocks(title="AeroSphere HUD") as demo:
