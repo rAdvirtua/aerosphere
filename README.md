@@ -46,7 +46,7 @@ AeroSphere challenges the traditional `text-in, text-out` paradigm of LLMs. It u
 4.  **Shader Bridging:** A client-side listener injects this payload synchronously into the running DOM.
 
 ### 3. Rendering Engine (Three.js WebGL)
-To retain blazing-fast delivery and circumvent 100MB+ WebAssembly game engine bundles like Unity, the environment calculates visual states procedurally on the native device GPU using **Three.js**:
+The environment calculates visual states procedurally on the native device GPU using **Three.js**:
 *   The planet mesh ignores static image textures, computing environments using complex custom **GLSL Fragment Shaders**.
 *   **Fractal Brownian Motion (FBM)** noise equations are manipulated by the JSON floats to dynamically shift continents, freeze oceans, and illuminate procedural populations.
 *   Network/Inference latency is masked locally via `Linear Interpolation (.lerp())`, allowing smooth, unbroken animations while the backend processes the Next State loop.
