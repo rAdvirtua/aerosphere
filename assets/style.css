@@ -195,7 +195,7 @@ gradio-app,
 /* === PANEL HEADER LABEL === */
 .aerosphere-panel-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -246,7 +246,7 @@ gradio-app,
 
 .aerosphere-telemetry-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   font-weight: 500;
   color: rgba(180, 240, 255, 1.0);
   text-shadow: 0 0 10px rgba(140, 210, 220, 0.4);
@@ -258,7 +258,7 @@ gradio-app,
 
 .aerosphere-telemetry-unit {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: rgba(160, 210, 230, 0.65);
   text-transform: uppercase;
@@ -313,7 +313,7 @@ gradio-app,
 .aerosphere-range-slider label {
   color: rgba(160, 210, 230, 0.65) !important;
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.55rem !important;
+  font-size: 0.75rem !important;
   letter-spacing: 0.2em !important;
   text-transform: uppercase !important;
 }
@@ -343,7 +343,7 @@ gradio-app,
 
 .aerosphere-narrative-text {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   line-height: 1.8;
   color: rgba(200, 220, 240, 0.95);
   letter-spacing: 0.02em;
@@ -354,7 +354,7 @@ gradio-app,
 .aerosphere-node-narrative .markdown-text,
 .aerosphere-node-narrative p {
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.72rem !important;
+  font-size: 0.95rem !important;
   line-height: 1.8 !important;
   color: rgba(200, 220, 240, 0.95) !important;
   letter-spacing: 0.02em !important;
@@ -362,7 +362,7 @@ gradio-app,
 
 .aerosphere-narrative-timestamp {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.85rem;
   color: rgba(240, 200, 120, 0.85);
   letter-spacing: 0.15em;
   margin-top: 12px;
@@ -412,7 +412,7 @@ gradio-app,
   width: 100% !important;
   padding: 12px 20px !important;
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.65rem !important;
+  font-size: 0.85rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.18em !important;
   text-transform: uppercase !important;
@@ -464,7 +464,7 @@ gradio-app,
 /* Action status indicator */
 .aerosphere-action-status {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.5rem;
+  font-size: 0.95rem;
   color: rgba(160, 240, 220, 0.65);
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -491,7 +491,7 @@ gradio-app,
   width: 100%;
   padding: 10px 16px !important;
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.7rem !important;
+  font-size: 0.95rem !important;
   letter-spacing: 0.05em;
   color: rgba(210, 240, 255, 0.95) !important;
   background: rgba(15, 25, 40, 0.8) !important;
@@ -520,7 +520,7 @@ gradio-app,
 
 .aerosphere-console-prompt {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   color: rgba(140, 240, 220, 0.7);
   letter-spacing: 0.1em;
   margin-bottom: 8px;
@@ -546,7 +546,7 @@ gradio-app,
 .aerosphere-node-status li,
 .aerosphere-status-row {
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6rem !important;
+  font-size: 0.85rem !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   color: #ffffff !important;
@@ -760,7 +760,7 @@ span.aerosphere-status-value.warning {
 .aerosphere-glass-panel label span {
   color: rgba(160, 210, 230, 0.65) !important;
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.55rem !important;
+  font-size: 0.75rem !important;
 }
 
 /* Slider number display */
@@ -893,4 +893,40 @@ span.aerosphere-status-value.warning {
   box-shadow: 0 0 25px rgba(255, 100, 255, 0.6), inset 0 0 15px rgba(255, 100, 255, 0.4) !important;
   transform: translateY(-1px) !important;
   color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  .aerosphere-body {
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 60px 10px 20px 10px !important;
+    gap: 15px !important;
+    height: 100vh !important;
+    position: relative !important;
+  }
+  .aerosphere-node-telemetry,
+  .aerosphere-node-status,
+  .aerosphere-node-actions,
+  .aerosphere-node-console,
+  .aerosphere-node-narrative {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    animation: none !important;
+    margin-bottom: 10px !important;
+  }
+  .aerosphere-habitability-panel {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+  }
 }
