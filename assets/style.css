@@ -1066,7 +1066,7 @@ span.aerosphere-status-value.warning {
     inset: auto 0 0 0 !important;
     top: auto !important;
     width: 100% !important;
-    max-height: 50vh !important;
+    max-height: 80vh !important;
     height: auto !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -1076,7 +1076,7 @@ span.aerosphere-status-value.warning {
     align-items: stretch !important;
     flex-wrap: nowrap !important;
     gap: 0 !important;
-    padding: 0 0 env(safe-area-inset-bottom, 8px) !important;
+    padding: 0 0 calc(env(safe-area-inset-bottom, 8px) + 70px) !important;
     background: rgba(3, 7, 16, 0.90) !important;
     backdrop-filter: blur(28px) saturate(1.4) !important;
     -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
@@ -1181,7 +1181,7 @@ span.aerosphere-status-value.warning {
     left: auto !important;
     transform: none !important;
     width: 100% !important;
-    max-height: 120px !important;
+    max-height: 45vh !important;
     overflow-y: auto !important;
     padding: 6px 14px 8px !important;
     animation: none !important;
@@ -1281,13 +1281,13 @@ span.aerosphere-status-value.warning {
      ------------------------------------------------------- */
   .aerosphere-hud-toggle {
     position: fixed !important;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 28px) !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
     z-index: 99999 !important;
-    width: 56px !important;
-    height: 56px !important;
+    width: 48px !important;
+    height: 48px !important;
     border-radius: 50% !important;
     background: rgba(8, 16, 28, 0.92) !important;
     backdrop-filter: blur(20px) saturate(1.4) !important;
