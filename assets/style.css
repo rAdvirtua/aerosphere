@@ -995,17 +995,6 @@ span.aerosphere-status-value.warning {
   /* -------------------------------------------------------
      OPEN STATE: body.hud-visible reveals everything
      ------------------------------------------------------- */
-  body.hud-visible::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 9;
-    background: rgba(3, 7, 16, 0.65);
-    backdrop-filter: blur(5px) saturate(1.2);
-    -webkit-backdrop-filter: blur(5px) saturate(1.2);
-    pointer-events: none;
-    animation: aerosphere-fade-in 0.3s ease both;
-  }
 
   body.hud-visible .aerosphere-habitability-panel {
     opacity: 1 !important;
