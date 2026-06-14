@@ -702,6 +702,11 @@ span.aerosphere-status-value.warning {
   100% { transform: scale(1.02) translate(-1%, 1%);  opacity: 0.35; }
 }
 
+@keyframes aerosphere-hud-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0;   }
+}
+
 /* =========================================================
    UTILITY
    ========================================================= */
@@ -862,8 +867,8 @@ span.aerosphere-status-value.warning {
 /* =========================================================
    MOBILE — ≤ 768px
    Planet fills screen. HUD hidden behind a toggle button.
-   Pressing the button opens the bottom drawer + top bar.
-   Same button closes it. Desktop is completely untouched.
+   Toggle button is centered at the bottom, always visible.
+   Desktop is completely untouched.
    ========================================================= */
 @media (max-width: 768px) {
 
@@ -925,8 +930,6 @@ span.aerosphere-status-value.warning {
   /* -------------------------------------------------------
      OPEN STATE: body.hud-visible reveals everything
      ------------------------------------------------------- */
-
-  /* Frosted backdrop behind panels, above canvas */
   body.hud-visible::after {
     content: '';
     position: fixed;
@@ -1219,50 +1222,51 @@ span.aerosphere-status-value.warning {
   }
 
   /* -------------------------------------------------------
-     HUD TOGGLE BUTTON — always visible on mobile
+     HUD TOGGLE BUTTON
+     Centered at bottom, always visible, above everything
      ------------------------------------------------------- */
   .aerosphere-hud-toggle {
     position: fixed !important;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px) !important;
-    right: 20px !important;
-    z-index: 300 !important;
-    width: 48px !important;
-    height: 48px !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 28px) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 99999 !important;
+    width: 56px !important;
+    height: 56px !important;
     border-radius: 50% !important;
-    background: rgba(8, 16, 28, 0.75) !important;
+    background: rgba(8, 16, 28, 0.92) !important;
     backdrop-filter: blur(20px) saturate(1.4) !important;
     -webkit-backdrop-filter: blur(20px) saturate(1.4) !important;
-    border: 1px solid rgba(100, 180, 220, 0.38) !important;
+    border: 1.5px solid rgba(100, 200, 220, 0.6) !important;
     cursor: pointer !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     box-shadow:
-      0 0 22px rgba(80, 160, 200, 0.18),
-      0 4px 18px rgba(0, 0, 0, 0.55) !important;
+      0 0 0 4px rgba(100, 200, 220, 0.08),
+      0 0 28px rgba(80, 180, 220, 0.4),
+      0 6px 24px rgba(0, 0, 0, 0.7) !important;
     transition: all 0.28s ease !important;
     touch-action: manipulation !important;
     overflow: visible !important;
     padding: 0 !important;
+    margin: 0 !important;
+    isolation: isolate !important;
   }
 
-  .aerosphere-hud-toggle:hover,
   .aerosphere-hud-toggle:active {
-    border-color: rgba(100, 200, 220, 0.65) !important;
-    box-shadow:
-      0 0 32px rgba(80, 180, 220, 0.32),
-      0 4px 22px rgba(0, 0, 0, 0.65) !important;
-    transform: scale(1.06) !important;
+    transform: translateX(-50%) scale(0.92) !important;
   }
 
   /* Pulse ring when HUD is closed */
   .aerosphere-hud-toggle::before {
     content: '' !important;
     position: absolute !important;
-    inset: -5px !important;
+    inset: -6px !important;
     border-radius: 50% !important;
-    border: 1px solid rgba(100, 200, 220, 0.22) !important;
-    animation: aerosphere-hud-ring 2.8s ease-out infinite !important;
+    border: 1.5px solid rgba(100, 200, 220, 0.3) !important;
+    animation: aerosphere-hud-ring 2.5s ease-out infinite !important;
     pointer-events: none !important;
   }
 
@@ -1273,10 +1277,11 @@ span.aerosphere-status-value.warning {
 
   /* Stronger glow when open */
   body.hud-visible .aerosphere-hud-toggle {
-    border-color: rgba(100, 200, 220, 0.7) !important;
+    border-color: rgba(100, 220, 240, 0.9) !important;
     box-shadow:
-      0 0 36px rgba(100, 200, 220, 0.35),
-      0 4px 22px rgba(0, 0, 0, 0.6) !important;
+      0 0 0 4px rgba(100, 200, 220, 0.15),
+      0 0 40px rgba(100, 200, 220, 0.55),
+      0 6px 24px rgba(0, 0, 0, 0.7) !important;
   }
 
   /* Icon swap */
@@ -1285,11 +1290,6 @@ span.aerosphere-status-value.warning {
 
   body.hud-visible .aerosphere-hud-toggle .icon-open  { display: none !important; }
   body.hud-visible .aerosphere-hud-toggle .icon-close { display: flex !important; }
-}
-
-@keyframes aerosphere-hud-ring {
-  0%   { transform: scale(1);   opacity: 0.6; }
-  100% { transform: scale(1.5); opacity: 0;   }
 }
 
 /* =========================================================
@@ -1329,9 +1329,10 @@ span.aerosphere-status-value.warning {
   }
 
   .aerosphere-hud-toggle {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
-    right: 14px !important;
-    width: 42px !important;
-    height: 42px !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 }
