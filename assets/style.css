@@ -11,10 +11,10 @@
   --background-fill-primary: transparent !important;
   --background-fill-secondary: transparent !important;
   /* Safe area insets for notched devices */
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
 }
 
 gradio-app,
@@ -108,8 +108,7 @@ gradio-app,
         before Three.js orbit/drag controls can handle them.            */
 .aerosphere-canvas-layer {
   position: fixed;
-  inset: 0;
-  /* shorthand: top/right/bottom/left = 0 */
+  inset: 0;                 /* shorthand: top/right/bottom/left = 0 */
   width: 100%;
   height: 100vh;
   height: 100svh;
@@ -122,8 +121,7 @@ gradio-app,
 }
 
 #aerosphere-planet-canvas {
-  display: block !important;
-  /* FIX: removes inline descender gap */
+  display: block !important;   /* FIX: removes inline descender gap */
   width: 100% !important;
   height: 100% !important;
   z-index: 0 !important;
@@ -161,10 +159,10 @@ gradio-app,
   z-index: 5;
   pointer-events: none;
   background: repeating-linear-gradient(0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 20, 40, 0.03) 2px,
-      rgba(0, 20, 40, 0.03) 4px);
+    transparent,
+    transparent 2px,
+    rgba(0, 20, 40, 0.03) 2px,
+    rgba(0, 20, 40, 0.03) 4px);
 }
 
 /* === HUD RETICLE (center crosshair) === */
@@ -255,15 +253,9 @@ gradio-app,
 }
 
 @keyframes aerosphere-pulse-dot {
-
   0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 1;
-  }
+  100% { opacity: 0.4; }
+  50%   { opacity: 1;   }
 }
 
 /* =========================================================
@@ -417,15 +409,9 @@ gradio-app,
 }
 
 @keyframes aerosphere-blink {
-
   0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
+  100% { opacity: 1; }
+  50%   { opacity: 0; }
 }
 
 /* =========================================================
@@ -497,7 +483,7 @@ gradio-app,
   background: rgba(60, 85, 105, 0.3) !important;
 }
 
-.aerosphere-action-btn+.aerosphere-action-btn {
+.aerosphere-action-btn + .aerosphere-action-btn {
   margin-top: 10px;
 }
 
@@ -689,14 +675,14 @@ span.aerosphere-status-value.warning {
 .aerosphere-corner-tl {
   top: 8px;
   left: 8px;
-  border-top: 1px solid rgba(120, 200, 220, 0.5);
+  border-top:  1px solid rgba(120, 200, 220, 0.5);
   border-left: 1px solid rgba(120, 200, 220, 0.5);
 }
 
 .aerosphere-corner-tr {
   top: 8px;
   right: 8px;
-  border-top: 1px solid rgba(120, 200, 220, 0.5);
+  border-top:   1px solid rgba(120, 200, 220, 0.5);
   border-right: 1px solid rgba(120, 200, 220, 0.5);
 }
 
@@ -704,82 +690,44 @@ span.aerosphere-status-value.warning {
   bottom: 8px;
   left: 8px;
   border-bottom: 1px solid rgba(120, 200, 220, 0.5);
-  border-left: 1px solid rgba(120, 200, 220, 0.5);
+  border-left:   1px solid rgba(120, 200, 220, 0.5);
 }
 
 .aerosphere-corner-br {
   bottom: 8px;
   right: 8px;
   border-bottom: 1px solid rgba(120, 200, 220, 0.5);
-  border-right: 1px solid rgba(120, 200, 220, 0.5);
+  border-right:  1px solid rgba(120, 200, 220, 0.5);
 }
 
 /* =========================================================
    ANIMATIONS
    ========================================================= */
 @keyframes aerosphere-fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0);    }
 }
 
 @keyframes aerosphere-fade-in-center {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(12px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  0%   { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0);    }
 }
 
 @keyframes aerosphere-fade-in-right {
-  0% {
-    opacity: 0;
-    transform: translateY(calc(-50% + 12px));
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(-50%);
-  }
+  0%   { opacity: 0; transform: translateY(calc(-50% + 12px)); }
+  100% { opacity: 1; transform: translateY(-50%);              }
 }
 
 @keyframes aerosphere-ambient-glow {
-
   0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
+  100% { opacity: 0.3; }
+  50%  { opacity: 0.5; }
 }
 
 @keyframes aerosphere-nebula-drift {
-  0% {
-    transform: scale(1) translate(0, 0);
-    opacity: 0.3;
-  }
-
-  50% {
-    transform: scale(1.05) translate(1%, -1%);
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: scale(1.02) translate(-1%, 1%);
-    opacity: 0.35;
-  }
+  0%   { transform: scale(1)    translate(0,   0);   opacity: 0.3;  }
+  50%  { transform: scale(1.05) translate(1%,  -1%); opacity: 0.4;  }
+  100% { transform: scale(1.02) translate(-1%, 1%);  opacity: 0.35; }
 }
 
 /* =========================================================
@@ -796,7 +744,6 @@ span.aerosphere-status-value.warning {
 
 /* Respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
-
   .aerosphere-nebula-layer,
   .aerosphere-panel-label::before,
   .aerosphere-cursor-blink {
@@ -886,9 +833,7 @@ span.aerosphere-status-value.warning {
 }
 
 @keyframes as-spin {
-  100% {
-    transform: rotate(360deg);
-  }
+  100% { transform: rotate(360deg); }
 }
 
 /* =========================================================
@@ -950,44 +895,42 @@ span.aerosphere-status-value.warning {
 
 /* =========================================================
    MOBILE — ≤ 768px
-   All fixed-positioned HUD nodes collapse into a single
-   scrollable column. Canvas still covers full viewport
-   behind the scroll container so Three.js renders normally.
+   LAYOUT: planet fills the screen behind everything.
+   A slim status bar pins to the top. A compact HUD drawer
+   anchors to the bottom. Everything else is hidden.
+
+   The planet is the UI. Panels are overlays.
    ========================================================= */
 @media (max-width: 768px) {
 
-  /* --- Viewport / Gradio container ---------------------- */
+  /* --- Lock Gradio container so it can't scroll or reflow */
   gradio-app,
   .gradio-container {
-    overflow-y: auto !important;
-    /* FIX: let Gradio scroll the stacked panels */
-    position: relative !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
+    position: fixed !important;
+    inset: 0 !important;
+    overflow: hidden !important;
+    height: 100dvh !important;
+    background: transparent !important;
   }
 
-  /* --- Canvas stays pinned full-screen behind panels ---- */
-  /* FIX: keep the canvas layer fixed & full-size on mobile */
+  /* --- Canvas: full-screen, behind everything ----------- */
   .aerosphere-canvas-layer {
     position: fixed !important;
     inset: 0 !important;
     width: 100% !important;
-    height: 100vh !important;
     height: 100dvh !important;
-    /* Ensure it stays below everything */
     z-index: 0 !important;
   }
 
-  /* --- Scanline / nebula / reticle ---------------------- */
+  /* --- Keep nebula/scanline as full-screen atmosphere --- */
   .aerosphere-nebula-layer,
   .aerosphere-scanline-overlay {
     position: fixed !important;
-    height: 100vh !important;
+    inset: 0 !important;
     height: 100dvh !important;
   }
 
-  /* Hide decorative elements on small screens */
+  /* --- KILL: all decorative chrome ---------------------- */
   .aerosphere-reticle,
   .aerosphere-edge-top,
   .aerosphere-edge-bottom,
@@ -998,173 +941,317 @@ span.aerosphere-status-value.warning {
     display: none !important;
   }
 
-  /* --- Scrollable panel column wrapper ------------------ */
-  /* FIX: aerosphere-body becomes a flex column scroll container
-     positioned below a fixed top-bar spacer so panels don't
-     sit behind the browser's address bar.                  */
-  .aerosphere-body {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
+  /* --- KILL: non-essential panels ----------------------- */
+  /* Sys Diagnostics and Aether Resonance add no gameplay
+     value on mobile and just consume precious planet space  */
+  .aerosphere-node-telemetry,
+  .aerosphere-node-status {
+    display: none !important;
+  }
+
+  /* === TOP STATUS BAR ===================================
+     40px strip. Shows habitability + tech level only.      */
+  .aerosphere-habitability-panel {
+    position: fixed !important;
+    inset: 0 auto auto 0 !important;
+    right: 0 !important;
+    transform: none !important;
     width: 100% !important;
+    max-width: none !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    background: rgba(3, 7, 16, 0.80) !important;
+    backdrop-filter: blur(20px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.3) !important;
+    border-bottom: 1px solid rgba(80, 140, 160, 0.18) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 1px 16px rgba(0, 0, 0, 0.5) !important;
+    z-index: 200 !important;
+  }
+
+  .aerosphere-habitability-panel .aerosphere-panel-label {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.12em !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+  }
+
+  .aerosphere-status-badge {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+    letter-spacing: 1.5px !important;
+    margin-right: 4px !important;
+  }
+
+  .aerosphere-tech-badge {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* === BOTTOM HUD DRAWER ================================
+     Fixed to bottom. Max ~50vh so planet stays visible in
+     the top half. Scrolls internally if content overflows. */
+  .aerosphere-body {
+    position: fixed !important;
+    inset: auto 0 0 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-height: 50vh !important;
     height: auto !important;
-    overflow-x: hidden !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
-    gap: 12px !important;
-    padding: 12px 12px calc(24px + var(--safe-bottom)) !important;
-    padding-top: calc(12px + var(--safe-top)) !important;
-    background: transparent !important;
-    /* Scrolling layer sits above canvas (z-index 0) but below modals */
-    z-index: 10 !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
+    align-items: stretch !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    padding: 0 0 env(safe-area-inset-bottom, 8px) !important;
+    background: rgba(3, 7, 16, 0.90) !important;
+    backdrop-filter: blur(28px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
+    border-top: 1px solid rgba(80, 140, 160, 0.22) !important;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.6) !important;
+    z-index: 100 !important;
   }
 
-  /* --- All HUD nodes: static flow, full width ----------- */
-  .aerosphere-node-telemetry,
-  .aerosphere-node-status,
-  .aerosphere-node-actions,
-  .aerosphere-node-console,
-  .aerosphere-node-narrative {
+  /* Drag handle pill at top of drawer */
+  .aerosphere-body::before {
+    content: '' !important;
+    display: block !important;
+    width: 32px !important;
+    height: 3px !important;
+    background: rgba(100, 160, 180, 0.28) !important;
+    border-radius: 2px !important;
+    margin: 7px auto 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* === ACTION ROW ========================================
+     Horizontal scrolling pill-button row. No vertical
+     stacking. No label. Tight padding.                     */
+  .aerosphere-node-actions {
     position: static !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
+    top: auto !important; right: auto !important;
     transform: none !important;
     width: 100% !important;
-    max-width: 480px !important;
-    /* Disable entrance animations — panels appear immediately */
+    padding: 6px 10px 4px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 0 !important;
     animation: none !important;
     opacity: 1 !important;
-    margin: 0 !important;
+    order: 1 !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Re-order panels for natural reading flow on mobile:
-     Status → Telemetry → Narrative → Actions → Console   */
-  .aerosphere-node-status {
-    order: 1;
+  /* Hide the label and the action status text */
+  .aerosphere-node-actions .aerosphere-panel-label,
+  .aerosphere-node-actions .aerosphere-action-status {
+    display: none !important;
   }
 
-  .aerosphere-node-telemetry {
-    order: 2;
+  /* Target Gradio's inner wrapper to make buttons horizontal */
+  .aerosphere-node-actions .block,
+  .aerosphere-node-actions .form,
+  .aerosphere-node-actions .wrap,
+  .aerosphere-node-actions > .block > div,
+  .aerosphere-node-actions > .block > .form {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 6px !important;
+    padding: 2px 0 6px !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    align-items: center !important;
+    background: transparent !important;
+    border: none !important;
   }
 
-  .aerosphere-node-narrative {
-    order: 3;
+  .aerosphere-node-actions .block > div::-webkit-scrollbar,
+  .aerosphere-node-actions .form::-webkit-scrollbar {
+    display: none !important;
   }
 
-  .aerosphere-node-actions {
-    order: 4;
-  }
-
-  .aerosphere-node-console {
-    order: 5;
-  }
-
-  /* --- Habitability panel: inline in flow --------------- */
-  .aerosphere-habitability-panel {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    order: 0;
-    /* pin above everything else */
-    width: 100% !important;
-    max-width: 480px !important;
-    justify-content: flex-start !important;
-    margin-bottom: 4px !important;
-  }
-
-  /* --- Typography scale-down for narrow screens --------- */
-  .aerosphere-telemetry-value {
-    font-size: 2rem;
-  }
-
-  .aerosphere-panel-label {
-    font-size: 0.78rem;
-  }
-
-  /* --- Inputs: 16px prevents iOS auto-zoom on focus ----- */
-  .aerosphere-console-input textarea,
-  .aerosphere-console-input input {
-    font-size: 16px !important;
-  }
-
-  /* --- Buttons: full-width, comfortable tap target ------ */
   .aerosphere-action-btn {
-    min-height: 48px !important;
-    font-size: 0.8rem !important;
-    letter-spacing: 0.12em !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 90px !important;
+    max-width: 150px !important;
+    min-height: 34px !important;
+    padding: 6px 11px !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.07em !important;
+    border-radius: 100px !important;
+    touch-action: manipulation !important;
   }
 
-  /* --- Range slider: wider thumb for fat fingers -------- */
-  .aerosphere-range-slider input[type="range"] {
-    height: 5px;
+  /* Tighter gap between stacked buttons in the actions column */
+  .aerosphere-action-btn + .aerosphere-action-btn {
+    margin-top: 0 !important;
   }
 
-  .aerosphere-range-slider input[type="range"]::-webkit-slider-thumb {
-    width: 28px;
-    height: 28px;
+  /* Hide the Atmospheric Harmony slider inside the actions panel */
+  .aerosphere-node-actions .aerosphere-range-slider,
+  .aerosphere-node-actions input[type="range"],
+  .aerosphere-node-actions .gradio-slider,
+  .aerosphere-node-actions label {
+    display: none !important;
   }
 
-  .aerosphere-range-slider input[type="range"]::-moz-range-thumb {
-    width: 28px;
-    height: 28px;
+  /* === NARRATIVE PANEL ==================================
+     Compact log. Single panel label line, scrollable body. */
+  .aerosphere-node-narrative {
+    position: static !important;
+    bottom: auto !important; left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-height: 120px !important;
+    overflow-y: auto !important;
+    padding: 6px 14px 8px !important;
+    animation: none !important;
+    opacity: 1 !important;
+    order: 2 !important;
+    flex-shrink: 0 !important;
+    border-top: 1px solid rgba(80, 140, 160, 0.10) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
-  /* --- Narrative panel: slightly smaller text on mobile - */
+  .aerosphere-node-narrative .aerosphere-panel-label {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.15em !important;
+    margin-bottom: 5px !important;
+    padding-bottom: 4px !important;
+  }
+
   .aerosphere-node-narrative .prose,
   .aerosphere-node-narrative .markdown-text,
   .aerosphere-node-narrative p,
   .aerosphere-narrative-text {
-    font-size: 0.88rem !important;
-    line-height: 1.7 !important;
+    font-size: 0.78rem !important;
+    line-height: 1.55 !important;
+    letter-spacing: 0.01em !important;
+    color: rgba(190, 215, 235, 0.9) !important;
   }
 
-  /* --- Status rows: tighter on small screens ------------ */
-  .aerosphere-status-row {
-    padding: 4px 0 !important;
+  /* Timestamp is redundant on mobile, hide it */
+  .aerosphere-narrative-timestamp {
+    display: none !important;
   }
 
-  /* --- Loading overlay: safe inset for notches ---------- */
+  /* === CONSOLE PANEL =====================================
+     Prompt + input only. Export button and history hidden. */
+  .aerosphere-node-console {
+    position: static !important;
+    bottom: auto !important; right: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    padding: 6px 14px 8px !important;
+    animation: none !important;
+    opacity: 1 !important;
+    order: 3 !important;
+    flex-shrink: 0 !important;
+    border-top: 1px solid rgba(80, 140, 160, 0.10) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Hide the panel header label in console */
+  .aerosphere-node-console .aerosphere-panel-label {
+    display: none !important;
+  }
+
+  .aerosphere-console-prompt {
+    font-size: 0.68rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 16px prevents iOS auto-zoom on focus */
+  .aerosphere-console-input textarea,
+  .aerosphere-console-input input {
+    font-size: 16px !important;
+    min-height: 38px !important;
+    max-height: 64px !important;
+    padding: 7px 12px !important;
+    resize: none !important;
+  }
+
+  /* Hide export button and console history on mobile */
+  .aerosphere-node-console .aerosphere-action-btn,
+  .aerosphere-console-history,
+  #console-history,
+  .aerosphere-node-console .gr-file {
+    display: none !important;
+  }
+
+  /* Loading overlay */
   .aerosphere-loading-overlay {
-    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+    padding-top: env(safe-area-inset-top, 0px);
   }
 }
 
 /* =========================================================
-   LANDSCAPE PHONES — keep canvas full-height
+   LANDSCAPE PHONES (wide + short, e.g. 667×375)
+   Side-by-side: narrative left, console+actions right.
+   Planet stays visible in the slim top strip.
    ========================================================= */
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+
   .aerosphere-canvas-layer {
-    height: 100vh !important;
     height: 100dvh !important;
   }
 
-  /* Compact panels side-by-side in landscape */
   .aerosphere-body {
+    max-height: 55vh !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     align-items: flex-start !important;
-    padding: 8px !important;
-    gap: 8px !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
 
-  .aerosphere-node-telemetry,
-  .aerosphere-node-status,
-  .aerosphere-node-actions,
-  .aerosphere-node-console,
-  .aerosphere-node-narrative,
-  .aerosphere-habitability-panel {
-    max-width: calc(50% - 8px) !important;
-    flex: 1 1 calc(50% - 8px) !important;
+  .aerosphere-node-actions {
+    flex: 0 0 auto !important;
+    max-width: 55% !important;
+    border-right: 1px solid rgba(80, 140, 160, 0.10) !important;
+    order: 1 !important;
   }
 
-  .aerosphere-telemetry-value {
-    font-size: 1.6rem;
+  .aerosphere-node-narrative {
+    flex: 1 1 auto !important;
+    max-height: 80px !important;
+    order: 2 !important;
+  }
+
+  .aerosphere-node-console {
+    flex: 0 0 100% !important;
+    order: 3 !important;
   }
 }
